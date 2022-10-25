@@ -21,7 +21,7 @@ USE `APS6` ;
 -- Table `APS6`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `APS6`.`usuario` (
-  `iduser` INT NOT NULL,
+  `iduser` INT NOT NULL AUTO_INCREMENT,
   `login` VARCHAR(45) NOT NULL,
   `biometria` LONGBLOB NOT NULL,
   `nome` VARCHAR(300) NOT NULL,
@@ -35,7 +35,7 @@ ENGINE = InnoDB;
 -- Table `APS6`.`regiao`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `APS6`.`regiao` (
-  `idRegioes` INT NOT NULL,
+  `idRegioes` INT NOT NULL AUTO_INCREMENT,
   `identificacao` VARCHAR(45) NULL,
   `impacto` VARCHAR(45) NULL,
   `ocorrencias` INT(6) NULL,
@@ -47,7 +47,7 @@ ENGINE = InnoDB;
 -- Table `APS6`.`propriedade`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `APS6`.`propriedade` (
-  `idpropriedades` INT NOT NULL,
+  `idpropriedades` INT NOT NULL AUTO_INCREMENT,
   `cep` VARCHAR(45) NULL,
   `estado` VARCHAR(45) NULL,
   `num` VARCHAR(45) NOT NULL,
@@ -66,9 +66,11 @@ ENGINE = InnoDB;
 -- Table `APS6`.`responsavel`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `APS6`.`responsavel` (
-  `idResponsaveis` INT NOT NULL,
+  `idResponsaveis` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NULL,
   `cpf` VARCHAR(45) NULL,
+  `idade` INT NULL,
+  `dataNasc` date null,
   `propriedade` INT NOT NULL,
   PRIMARY KEY (`idResponsaveis`, `propriedade`),
   INDEX `fk_Responsaveis_propriedades1_idx` (`propriedade` ASC),
@@ -85,11 +87,11 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 use aps6;
-insert into regiao (idRegioes, identificacao, impacto, ocorrencias) values (1,"Norte","","");
-insert into regiao (idRegioes, identificacao, impacto, ocorrencias) values (2,"Nordeste","","");
-insert into regiao (idRegioes, identificacao, impacto, ocorrencias) values (3,"Centro-Oeste","","");
-insert into regiao (idRegioes, identificacao, impacto, ocorrencias) values (4,"Sudeste","","");
-insert into regiao (idRegioes, identificacao, impacto, ocorrencias) values (5,"Sul","","");
+insert into regiao (idRegioes, identificacao, impacto, ocorrencias) values (0,"Norte","",1);
+insert into regiao (idRegioes, identificacao, impacto, ocorrencias) values (0,"Nordeste","",2);
+insert into regiao (idRegioes, identificacao, impacto, ocorrencias) values (0,"Centro-Oeste","",3);
+insert into regiao (idRegioes, identificacao, impacto, ocorrencias) values (0,"Sudeste","",4);
+insert into regiao (idRegioes, identificacao, impacto, ocorrencias) values (0,"Sul","",5);
 
 insert into usuario (iduser, login, biometria, nome, cargo) 
-values (1,"vanderson","","Vanderson","Ministro da Natureza do Universo");
+values (0,"vanderson","","Vanderson","Ministro da Natureza do Universo");

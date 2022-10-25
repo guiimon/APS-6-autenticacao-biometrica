@@ -62,6 +62,23 @@ public class DBConnect {
 		
 	}
 	
+	public boolean PesquisarUsuario(String login){
+		String query = "select * from usuario where login = ?";
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			stmt.setString(1, login);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	
 	public boolean VerificarConection() throws Exception{
 		getConnection(user, password, porta);
 		try {

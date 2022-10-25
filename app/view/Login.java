@@ -10,6 +10,7 @@ import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -18,9 +19,17 @@ import java.awt.FlowLayout;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
+import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
 
 public class Login extends JFrame {
+	//Parametros
 	private CardLayout cl;
+	JFileChooser janela = new JFileChooser();
+	
 	//Paineis de Exibição
 	private RegAdd TelaRegAdd = new RegAdd();
 	private PropAdd TelaPropAdd = new PropAdd();
@@ -31,6 +40,12 @@ public class Login extends JFrame {
 	
 	JMenuBar menuBar;
 	private JTextField txtLogin;
+	
+	
+	/**
+	 * @wbp.nonvisual location=383,554
+	 */
+	private final JLabel lblArquivo = new JLabel("");
 	
 	/**
 	 * Launch the application.
@@ -120,23 +135,35 @@ public class Login extends JFrame {
 		
 		JMenuItem mntmUserView = new JMenuItem("Visualizar");
 		mnUsuarios.add(mntmUserView);
+		
+		JLabel lblNewLabel = new JLabel("                                                                                                              ");
+		lblNewLabel.setEnabled(false);
+		menuBar.add(lblNewLabel);
+		
+		JMenuItem mntmSair = new JMenuItem("Sair");
+		mntmSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				menuSairAddActionPerformed();
+			}
+		});
+		menuBar.add(mntmSair);
 		MainPanel = new JPanel();
 		MainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(MainPanel);
 		MainPanel.setLayout(new CardLayout(0, 0));
 		
 		JPanel LoginPanel = new JPanel();
-		MainPanel.add(LoginPanel, "name_952926013944500");
+		MainPanel.add(LoginPanel, "TelaLogin1");
 		LoginPanel.setLayout(null);
 		
 		txtLogin = new JTextField();
-		txtLogin.setBounds(300, 141, 150, 22);
+		txtLogin.setBounds(343, 143, 150, 22);
 		LoginPanel.add(txtLogin);
 		txtLogin.setColumns(10);
 		
-		JLabel lblLogin = new JLabel("Login");
-		lblLogin.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLogin.setBounds(350, 109, 50, 13);
+		JLabel lblLogin = new JLabel("Login: ");
+		lblLogin.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblLogin.setBounds(255, 147, 50, 13);
 		LoginPanel.add(lblLogin);
 		
 		JButton btnConfirma = new JButton("Confirma");
@@ -148,16 +175,52 @@ public class Login extends JFrame {
 		btnConfirma.setBounds(330, 225, 90, 21);
 		LoginPanel.add(btnConfirma);
 		
+		JLabel lblLoginDeUsurio = new JLabel("Login de Usuário");
+		lblLoginDeUsurio.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLoginDeUsurio.setFont(new Font("Calibri", Font.BOLD, 25));
+		lblLoginDeUsurio.setBounds(240, 37, 270, 44);
+		LoginPanel.add(lblLoginDeUsurio);
+		
+		JLabel lblBiometria = new JLabel("Biometria:");
+		lblBiometria.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblBiometria.setBounds(255, 185, 50, 13);
+		LoginPanel.add(lblBiometria);
+		
+		JButton btnArquivo = new JButton("Selecionar Arquivo");
+		btnArquivo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnArquivoActionPerformed();
+			}
+		});
+		btnArquivo.setBounds(343, 181, 150, 21);
+		LoginPanel.add(btnArquivo);
+		
 		MainPanel.add(TelaRegAdd, "TelaRegAdd");
 		MainPanel.add(TelaPropAdd, "TelaPropAdd");
 		MainPanel.add(TelaRespAdd, "TelaRespAdd");
 		MainPanel.add(TelaUserAdd, "TelaUserAdd");
 	}
 	//Métodos
+	private void btnArquivoActionPerformed() {
+		janela.showOpenDialog(this);
+		lblArquivo.setText(janela.getSelectedFile().getAbsolutePath());
+		
+	}
+	
 	private void btnConfirmaActionPerformed() {
-		menuBar.setVisible(true);
-		cl = (CardLayout) MainPanel.getLayout();
-		cl.show(MainPanel, "TelaRegAdd");
+		if(!lblArquivo.getText().equals("") && !txtLogin.getText().equals("")) {
+			//metodo que verifica se o usuario existe no DB
+			
+			
+			menuBar.setVisible(true);
+			cl = (CardLayout) MainPanel.getLayout();
+			cl.show(MainPanel, "TelaRegAdd");
+		}else if(txtLogin.getText().equals("")) {
+			JOptionPane.showMessageDialog(this, "O Login não pode ser vazio.");
+		}
+		else if(lblArquivo.getText().equals("")) {
+			JOptionPane.showMessageDialog(this, "Selecione o Arquivo de Biometria.");
+		}
 	}
 	
 	private void menuRegAddActionPerformed() {
@@ -178,5 +241,11 @@ public class Login extends JFrame {
 	private void menuUserAddActionPerformed() {
 		cl = (CardLayout) MainPanel.getLayout();
 		cl.show(MainPanel, "TelaUserAdd");
+	}
+	
+	private void menuSairAddActionPerformed() {
+		menuBar.setVisible(false);
+		cl = (CardLayout) MainPanel.getLayout();
+		cl.show(MainPanel, "TelaLogin1");
 	}
 }
