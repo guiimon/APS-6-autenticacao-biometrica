@@ -69,7 +69,7 @@ public class PropAdd extends JPanel {
 		cmbRegiao.setBounds(280, 272, 120, 19);
 		add(cmbRegiao);
 		
-		JButton btnVoltar = new JButton("Voltar");
+		JButton btnVoltar = 	new JButton("Voltar");
 		btnVoltar.setFont(new Font("Calibri", Font.PLAIN, 20));
 		btnVoltar.setBounds(169, 404, 100, 33);
 		add(btnVoltar);

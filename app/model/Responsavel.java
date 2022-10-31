@@ -5,16 +5,16 @@ public class Responsavel {
 	private int id;
 	private String nome;
 	private String cpf;
+	private int idade;
+	private String dataNasc;
 	private int propriedade;
 	
-	public Responsavel() {
-		
-	}
-	
-	public Responsavel(int id, String nome, String cpf, int propriedade) {
+	public Responsavel(int id, String nome, String cpf, int idade, String dataNasc, int propriedade) {
 		setId(id);
 		setNome(nome);
 		setCpf(cpf);
+		setIdade(idade);
+		setDataNasc(dataNasc);
 		setPropriedade(propriedade);
 	}
 	
@@ -43,6 +43,27 @@ public class Responsavel {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
+
+	public int getIdade() {
+		return idade;
+	}
+
+	public void setIdade(int idade) {
+		this.idade = idade;
+	}
+
+	public String getDataNasc() {
+		return dataNasc;
+	}
+
+	public void setDataNasc(String dataNasc) {
+		this.dataNasc = dataNasc;
+	}
+	
+	public Responsavel() {
+		
+	}
+	
 	public int getPropriedade() {
 		return propriedade;
 	}

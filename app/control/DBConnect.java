@@ -9,13 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBConnect {
-	private String user = "root";
-	private String password = "1234";
-	private String porta = "3306";
+	protected String user = "root";
+	protected String password = "1234";
+	protected String porta = "3306";
 	
-	private Connection con;
+	protected Connection con;
 	
-	public boolean Inserir(String login, String nome, FileInputStream arquivo, String cargo) {
+	public boolean InserirUser(String login, String nome, FileInputStream arquivo, String cargo) {
 		//Connection
 				
 		String query = "insert into usuario (iduser, login, biometria, nome, cargo)";
@@ -25,7 +25,7 @@ public class DBConnect {
 			this.getConnection(user, password, porta);
 			PreparedStatement stmt = con.prepareStatement(query);
 			//Preenchendo os valores de ? do Statement
-			stmt.setInt(1, 2);
+			stmt.setInt(1, 0);
 			stmt.setString(2, login);
 			stmt.setBinaryStream(3, arquivo, arquivo.available());
 			stmt.setString(4, nome);
@@ -39,6 +39,7 @@ public class DBConnect {
 			return false;
 		}
 	}
+	
 	
 	public InputStream Imagem(String usuario) {
 		String query = "select * from usuario where login = ?"; //não especifica qual valor será adicionado
@@ -81,13 +82,8 @@ public class DBConnect {
 	
 	public boolean VerificarConection() throws Exception{
 		getConnection(user, password, porta);
-		try {
-			boolean resposta = con.isValid(10);
-			return resposta;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+		boolean resposta = con.isValid(10);
+		return resposta;
 	}
 	
 	public void getConnection(String user, String password, String porta) throws Exception{

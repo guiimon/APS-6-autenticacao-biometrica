@@ -14,6 +14,7 @@ public class Teste {
 		
 		JanelaTeste2 janela = new JanelaTeste2();
 		janela.setVisible(true);
+		
 		// TODO Auto-generated method stub
 		/*
 		DBConnect db = new DBConnect();

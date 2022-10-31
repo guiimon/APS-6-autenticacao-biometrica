@@ -28,24 +28,28 @@ import java.awt.event.KeyEvent;
 public class Login extends JFrame {
 	//Parametros
 	private CardLayout cl;
-	JFileChooser janela = new JFileChooser();
+	private JFileChooser janela = new JFileChooser();
+	private String CaminhoArquivo;
 	
 	//Paineis de Exibição
 	private RegAdd TelaRegAdd = new RegAdd();
 	private PropAdd TelaPropAdd = new PropAdd();
 	private RespAdd TelaRespAdd = new RespAdd();
 	private UserAdd TelaUserAdd = new UserAdd();
+	private RegView TelaRegView = new RegView();
+	private PropView TelaPropView = new PropView();
+	private RespView TelaRespView = new RespView();
+	private UserView TelaUserView = new UserView();
 	private JPanel MainPanel;
 	
+	//Menu superior
+	private JMenuBar menuBar;
+	private JMenu mnRegioes;
+	private JMenu mnPropriedades;
+	private JMenu mnResponsaveis;
+	private JMenu mnUsuarios;
 	
-	JMenuBar menuBar;
 	private JTextField txtLogin;
-	
-	
-	/**
-	 * @wbp.nonvisual location=383,554
-	 */
-	private final JLabel lblArquivo = new JLabel("");
 	
 	/**
 	 * Launch the application.
@@ -74,7 +78,8 @@ public class Login extends JFrame {
 		menuBar.setVisible(false);
 		setJMenuBar(menuBar);
 		
-		JMenu mnRegioes = new JMenu("Regiões");
+		mnRegioes = new JMenu("Regiões");
+		mnRegioes.setEnabled(false);
 		menuBar.add(mnRegioes);
 		
 		JMenuItem mntmRegAdd = new JMenuItem("Adicionar");
@@ -89,12 +94,13 @@ public class Login extends JFrame {
 		JMenuItem mntmRegView = new JMenuItem("Visualizar");
 		mntmRegView.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				menuRegViewActionPerformed();
 			}
 		});
 		mnRegioes.add(mntmRegView);
 		
-		JMenu mnPropriedades = new JMenu("Propriedades");
+		mnPropriedades = new JMenu("Propriedades");
+		mnPropriedades.setEnabled(false);
 		menuBar.add(mnPropriedades);
 		
 		JMenuItem mntmPropAdd = new JMenuItem("Adicionar");
@@ -106,9 +112,15 @@ public class Login extends JFrame {
 		mnPropriedades.add(mntmPropAdd);
 		
 		JMenuItem mntmPropView = new JMenuItem("Visualizar");
+		mntmPropView.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				menuPropViewActionPerformed();
+			}
+		});
 		mnPropriedades.add(mntmPropView);
 		
-		JMenu mnResponsaveis = new JMenu("Responsaveis");
+		mnResponsaveis = new JMenu("Responsaveis");
+		mnResponsaveis.setEnabled(false);
 		menuBar.add(mnResponsaveis);
 		
 		JMenuItem mntmRespAdd = new JMenuItem("Adicionar");
@@ -120,9 +132,15 @@ public class Login extends JFrame {
 		mnResponsaveis.add(mntmRespAdd);
 		
 		JMenuItem mntmRespView = new JMenuItem("Visualizar");
+		mntmRespView.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				menuRespViewActionPerformed();
+			}
+		});
 		mnResponsaveis.add(mntmRespView);
 		
-		JMenu mnUsuarios = new JMenu("Usuarios");
+		mnUsuarios = new JMenu("Usuarios");
+		mnUsuarios.setEnabled(false);
 		menuBar.add(mnUsuarios);
 		
 		JMenuItem mntmUserAdd = new JMenuItem("Adicionar");
@@ -134,6 +152,11 @@ public class Login extends JFrame {
 		mnUsuarios.add(mntmUserAdd);
 		
 		JMenuItem mntmUserView = new JMenuItem("Visualizar");
+		mntmUserView.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				menuUserViewActionPerformed();
+			}
+		});
 		mnUsuarios.add(mntmUserView);
 		
 		JLabel lblNewLabel = new JLabel("                                                                                                              ");
@@ -199,26 +222,33 @@ public class Login extends JFrame {
 		MainPanel.add(TelaPropAdd, "TelaPropAdd");
 		MainPanel.add(TelaRespAdd, "TelaRespAdd");
 		MainPanel.add(TelaUserAdd, "TelaUserAdd");
+		MainPanel.add(TelaRegView, "TelaRegView");
+		MainPanel.add(TelaPropView, "TelaPropView");
+		MainPanel.add(TelaRespView, "TelaRespView");
+		MainPanel.add(TelaUserView, "TelaUserView");
+		
 	}
+	
 	//Métodos
 	private void btnArquivoActionPerformed() {
 		janela.showOpenDialog(this);
-		lblArquivo.setText(janela.getSelectedFile().getAbsolutePath());
+		CaminhoArquivo = janela.getSelectedFile().getAbsolutePath();
 		
 	}
 	
 	private void btnConfirmaActionPerformed() {
-		if(!lblArquivo.getText().equals("") && !txtLogin.getText().equals("")) {
+		if(!CaminhoArquivo.equals("") && !txtLogin.getText().equals("")) {
 			//metodo que verifica se o usuario existe no DB
 			
 			
 			menuBar.setVisible(true);
+			UserLevel("Ministro do Meio Ambiente");
 			cl = (CardLayout) MainPanel.getLayout();
 			cl.show(MainPanel, "TelaRegAdd");
 		}else if(txtLogin.getText().equals("")) {
 			JOptionPane.showMessageDialog(this, "O Login não pode ser vazio.");
 		}
-		else if(lblArquivo.getText().equals("")) {
+		else if(CaminhoArquivo.equals("")) {
 			JOptionPane.showMessageDialog(this, "Selecione o Arquivo de Biometria.");
 		}
 	}
@@ -228,9 +258,21 @@ public class Login extends JFrame {
 		cl.show(MainPanel, "TelaRegAdd");
 	}
 	
+	private void menuRegViewActionPerformed() {
+		cl = (CardLayout) MainPanel.getLayout();
+		TelaRegView.carrega();
+		cl.show(MainPanel, "TelaRegView");
+	}
+	
 	private void menuPropAddActionPerformed() {
 		cl = (CardLayout) MainPanel.getLayout();
 		cl.show(MainPanel, "TelaPropAdd");
+	}
+	
+	private void menuPropViewActionPerformed() {
+		cl = (CardLayout) MainPanel.getLayout();
+		TelaPropView.carrega();
+		cl.show(MainPanel,"TelaPropView");
 	}
 	
 	private void menuRespAddActionPerformed() {
@@ -238,14 +280,50 @@ public class Login extends JFrame {
 		cl.show(MainPanel, "TelaRespAdd");
 	}
 	
+	private void menuRespViewActionPerformed() {
+		cl = (CardLayout) MainPanel.getLayout();
+		TelaRespView.carrega();
+		cl.show(MainPanel, "TelaRespView");
+	}
+	
 	private void menuUserAddActionPerformed() {
 		cl = (CardLayout) MainPanel.getLayout();
 		cl.show(MainPanel, "TelaUserAdd");
 	}
 	
+	private void menuUserViewActionPerformed() {
+		cl = (CardLayout) MainPanel.getLayout();
+		TelaUserView.carrega();
+		cl.show(MainPanel, "TelaUserView");
+	}
+	
 	private void menuSairAddActionPerformed() {
 		menuBar.setVisible(false);
+		UserLevel("");
 		cl = (CardLayout) MainPanel.getLayout();
 		cl.show(MainPanel, "TelaLogin1");
+	}
+	
+	private void UserLevel(String cargo) {
+		switch(cargo) {
+		case "Fiscal do Ibama":
+			mnRegioes.setEnabled(true);
+			break;
+		case "Diretor de Divisão":
+			mnRegioes.setEnabled(true);
+			mnPropriedades.setEnabled(true);
+			break;
+		case "Ministro do Meio Ambiente":
+			mnRegioes.setEnabled(true);
+			mnPropriedades.setEnabled(true);
+			mnResponsaveis.setEnabled(true);
+			mnUsuarios.setEnabled(true);
+			break;
+		default:
+			mnRegioes.setEnabled(false);
+			mnPropriedades.setEnabled(false);
+			mnResponsaveis.setEnabled(false);
+			mnUsuarios.setEnabled(false);
+		}	
 	}
 }

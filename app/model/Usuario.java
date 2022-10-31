@@ -6,7 +6,8 @@ public class Usuario {
 	//Parametros
 	private int id;
 	private String login;
-	private FileInputStream biometria;
+	private String biometria;
+	private FileInputStream input;
 	private String nome;
 	private String cargo;
 	
@@ -23,7 +24,7 @@ public class Usuario {
 	}
 	
 	
-	public Usuario(int id,String login,FileInputStream biometria, String nome, String cargo) {
+	public Usuario(int id,String login,String biometria, String nome, String cargo) {
 		setId(id);
 		setLogin(login);
 		setBiometria(biometria);
@@ -31,9 +32,10 @@ public class Usuario {
 		setCargo(cargo);
 	}
 	
-	public Usuario(String login,FileInputStream biometria, String nome, String cargo) {
+	public Usuario(int id, String login,FileInputStream biometria, String nome, String cargo) {
+		setId(id);
 		setLogin(login);
-		setBiometria(biometria);
+		setInput(biometria);
 		setNome(nome);
 		setCargo(cargo);
 	}
@@ -51,12 +53,23 @@ public class Usuario {
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	public FileInputStream getBiometria() {
+	
+	
+	public FileInputStream getInput() {
+		return input;
+	}
+	public void setInput(FileInputStream biometria) {
+		this.input = biometria;
+	}
+	
+	public String getBiometria() {
 		return biometria;
 	}
-	public void setBiometria(FileInputStream biometria) {
+
+	public void setBiometria(String biometria) {
 		this.biometria = biometria;
 	}
+
 	public String getNome() {
 		return nome;
 	}
