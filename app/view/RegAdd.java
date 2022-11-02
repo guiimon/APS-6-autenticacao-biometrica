@@ -1,17 +1,29 @@
 package app.view;
 
 import javax.swing.JPanel;
+
+import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
+import app.control.RegiaoDAO;
+import app.model.Regiao;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 public class RegAdd extends JPanel {
+	//
+	private RegiaoDAO dao = new RegiaoDAO();
+	
 	private JTextField txtIdentificacao;
 	private JTextField txtImpacto;
 	private JTextField txtQuantidade;
@@ -54,10 +66,20 @@ public class RegAdd extends JPanel {
 		lblNewLabel_1_1_1.setFont(new Font("Calibri", Font.PLAIN, 18));
 		
 		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnVoltarActionPerformed();
+			}
+		});
 		btnVoltar.setBounds(169, 404, 100, 33);
 		btnVoltar.setFont(new Font("Calibri", Font.PLAIN, 20));
 		
 		JButton btnRegistro = new JButton("Registro");
+		btnRegistro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnRegistroActionPerformed();
+			}
+		});
 		btnRegistro.setBounds(460, 404, 110, 33);
 		btnRegistro.setFont(new Font("Calibri", Font.PLAIN, 20));
 		setLayout(null);
@@ -72,5 +94,27 @@ public class RegAdd extends JPanel {
 		add(txtQuantidade);
 
 	}
-
+	
+	public void start() {
+		txtIdentificacao.setText("");
+		txtImpacto.setText("");
+		txtQuantidade.setText("");
+	}
+	
+	private void btnVoltarActionPerformed() {
+		
+	}
+	
+	private void btnRegistroActionPerformed(){
+		if(!txtIdentificacao.getText().equals("") & !txtImpacto.getText().equals("") & !txtQuantidade.getText().equals("")) {
+			try{
+				dao.InserirRegiao(new Regiao(txtIdentificacao.getText(),txtImpacto.getText(),Integer.parseInt(txtQuantidade.getText())));
+				JOptionPane.showMessageDialog(this, "Região adicionada com êxito.");
+			}catch(Exception e){
+				JOptionPane.showMessageDialog(this, "Coloque um valor numérico na quantidade.");
+			}
+		}else {
+			JOptionPane.showMessageDialog(this, "Preencha todos os campos.");
+		}
+	}
 }

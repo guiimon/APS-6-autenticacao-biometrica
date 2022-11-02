@@ -4,14 +4,27 @@ import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
+
+import app.control.PropriedadeDAO;
+import app.model.Propriedade;
+
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+import javax.swing.SpinnerNumberModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PropAdd extends JPanel {
+	private PropriedadeDAO dao = new PropriedadeDAO();
+	
+	private JComboBox<String> cbxRegiao;
+	private JSpinner spnNumero;
 	private JTextField txtCep;
 	private JTextField txtEstado;
 
@@ -52,22 +65,23 @@ public class PropAdd extends JPanel {
 		add(lblRegio);
 		
 		txtCep = new JTextField();
-		txtCep.setBounds(280, 152, 120, 19);
+		txtCep.setBounds(280, 152, 150, 19);
 		add(txtCep);
 		txtCep.setColumns(10);
 		
 		txtEstado = new JTextField();
 		txtEstado.setColumns(10);
-		txtEstado.setBounds(280, 193, 120, 19);
+		txtEstado.setBounds(280, 193, 150, 19);
 		add(txtEstado);
 		
-		JSpinner spnNumero = new JSpinner();
-		spnNumero.setBounds(280, 233, 120, 19);
+		spnNumero = new JSpinner();
+		spnNumero.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		spnNumero.setBounds(280, 233, 150, 19);
 		add(spnNumero);
 		
-		JComboBox cmbRegiao = new JComboBox();
-		cmbRegiao.setBounds(280, 272, 120, 19);
-		add(cmbRegiao);
+		cbxRegiao = new JComboBox<String>();
+		cbxRegiao.setBounds(280, 272, 150, 19);
+		add(cbxRegiao);
 		
 		JButton btnVoltar = 	new JButton("Voltar");
 		btnVoltar.setFont(new Font("Calibri", Font.PLAIN, 20));
@@ -75,9 +89,44 @@ public class PropAdd extends JPanel {
 		add(btnVoltar);
 		
 		JButton btnRegistro = new JButton("Registro");
+		btnRegistro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnRegistroActionPerformed();
+			}
+		});
 		btnRegistro.setFont(new Font("Calibri", Font.PLAIN, 20));
 		btnRegistro.setBounds(460, 404, 110, 33);
 		add(btnRegistro);
 
 	}
+	
+	public void start() {
+		txtCep.setText("");
+		txtEstado.setText("");
+		spnNumero.setValue(0);
+		carregaRegiao();
+	}
+	
+	private void carregaRegiao() {
+		try {
+			cbxRegiao.setModel(dao.pesquisaRegiao());
+		}catch(Exception e) {
+			JOptionPane.showMessageDialog(this, "Não foi possivel efetuar conexão ao banco de dados\nVerifique sua conexão.");
+		}
+	}
+	
+	private void btnRegistroActionPerformed() {
+		if(cbxRegiao.getSelectedIndex()!=0) {
+			if(!txtCep.getText().equals("")&!txtEstado.getText().equals("")&!spnNumero.getValue().equals(0))
+			try {
+				dao.InserirPropriedade(new Propriedade(txtCep.getText(), txtEstado.getText(), (Integer)spnNumero.getValue(), cbxRegiao.getSelectedIndex()));
+				JOptionPane.showMessageDialog(this, "Propriedade Registrada com êxito.");
+			}catch(Exception e) {
+				JOptionPane.showMessageDialog(this, "Preencha todos os valores.");
+			}
+		}else {
+			JOptionPane.showMessageDialog(this, "Selecione uma Região para a propriedade.");
+		}
+	}
+	
 }

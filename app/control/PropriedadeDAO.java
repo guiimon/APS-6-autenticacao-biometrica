@@ -1,15 +1,29 @@
-package app.model;
+package app.control;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
-import app.control.DBConnect;
 import app.view.PropView;
 
 public class PropriedadeDAO extends DBConnect{
+	
+	
+	public DefaultComboBoxModel<String> pesquisaRegiao() throws Exception{
+		DefaultComboBoxModel<String> resultado = new DefaultComboBoxModel<String>();
+		resultado.addElement("Escolha a regiao");
+		String query = "select idRegioes, identificacao from regiao;";
+		this.getConnection(user, password, porta);
+		PreparedStatement stmt = con.prepareStatement(query);
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			resultado.addElement(rs.getInt(1)+" - "+rs.getString(2));
+		}
+		return resultado;
+	}
 	
 	public boolean InserirPropriedade(Propriedade pro){	
 		String query = "insert into propriedade (idpropriedades, cep, estado, num, regiao)";
@@ -68,7 +82,7 @@ public class PropriedadeDAO extends DBConnect{
 		return resultado;
 	}
 	
-	public void visualizar(PropView janela) throws Exception{ //mudar pra janela correta
+	public void visualizar(PropView janela) throws Exception{ 
 		ArrayList<Propriedade> lista = LerPropriedade();
 		DefaultTableModel modelo = (DefaultTableModel) janela.getTable().getModel();
 		modelo.setRowCount(0);

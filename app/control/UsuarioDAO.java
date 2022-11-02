@@ -1,37 +1,29 @@
-package app.model;
+package app.control;
 
-import java.io.FileInputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
 
-import app.control.DBConnect;
+import app.model.Usuario;
 import app.view.UserView;
 
 public class UsuarioDAO extends DBConnect{
-	public boolean InserirUsuario(Usuario usr){	
+	public void InserirUsuario(Usuario usr) throws Exception{	
 		String query = "insert into usuario (iduser, login, biometria, nome, cargo)";
 		query+= "values (?,?,?,?,?);";
-		
-		try {
-			this.getConnection(user, password, porta);
-			PreparedStatement stmt = con.prepareStatement(query);
-			//Preenchendo os valores de ? do Statement
-			stmt.setInt(1, 0);
-			stmt.setString(2, usr.getLogin());
-			stmt.setBinaryStream(3, usr.getInput());
-			stmt.setString(4, usr.getNome());
-			stmt.setString(5,usr.getCargo());
-			stmt.executeUpdate();
-			stmt.close();
-			con.close();
-			return true;
-		}
-		catch(Exception e) {	
-			return false;
-		}
+		this.getConnection(user, password, porta);
+		PreparedStatement stmt = con.prepareStatement(query);
+		//Preenchendo os valores de ? do Statement
+		stmt.setInt(1, 0);
+		stmt.setString(2, usr.getLogin());
+		stmt.setBinaryStream(3, usr.getInput());
+		stmt.setString(4, usr.getNome());
+		stmt.setString(5,usr.getCargo());
+		stmt.executeUpdate();
+		stmt.close();
+		con.close();
 	}
 	
 	public boolean UpdateUsuarioBiometria(Usuario usr) {
@@ -103,4 +95,22 @@ public class UsuarioDAO extends DBConnect{
 		}
 		janela.getTable().setModel(modelo);
 	}
+	
+	public boolean checaUsuario(String usuario) {
+		String query = "select * from usuario where usuario = ?;";
+		try {
+			this.getConnection(user, password, porta);
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				return true;
+			}else {
+				return false;
+			}
+		}catch(Exception e) {
+			return false;
+		}
+	}
+	
+	
 }

@@ -12,7 +12,7 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
-import app.model.PropriedadeDAO;
+import app.control.PropriedadeDAO;
 
 public class PropView extends JPanel {
 	//

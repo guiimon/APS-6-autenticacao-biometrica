@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import app.model.ResponsavelDAO;
+import app.control.ResponsavelDAO;
 
 public class RespView extends JPanel {
 	ResponsavelDAO dao = new ResponsavelDAO();

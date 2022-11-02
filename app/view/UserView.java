@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import app.model.UsuarioDAO;
+import app.control.UsuarioDAO;
 
 public class UserView extends JPanel {
 	UsuarioDAO dao = new UsuarioDAO();
@@ -34,7 +34,7 @@ public class UserView extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setBounds(64, 69, 622, 315);
+		scrollPane.setBounds(54, 69, 622, 315);
 		add(scrollPane);
 		
 		dataTable = new JTable();

@@ -1,4 +1,4 @@
-package app.model;
+package app.control;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
 
-import app.control.DBConnect;
+import app.model.Regiao;
 import app.view.RegView;
 
 public class RegiaoDAO extends DBConnect{

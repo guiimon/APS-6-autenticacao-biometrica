@@ -1,37 +1,45 @@
-package app.model;
+package app.control;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
-import app.control.DBConnect;
 import app.view.RespView;
 
 public class ResponsavelDAO extends DBConnect{
-	public boolean InserirResponsavel(Responsavel resp){	
+	
+	public DefaultComboBoxModel<String> pesquisaPropriedade() throws Exception {
+		DefaultComboBoxModel<String> resultado = new DefaultComboBoxModel<String>();
+		resultado.addElement("Escolha a propriedade");
+		String query = "select idpropriedades, cep, estado, num from propriedade;";
+		this.getConnection(user, password, porta);
+		PreparedStatement stmt = con.prepareStatement(query);
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			resultado.addElement(rs.getInt(1)+" - "+rs.getString(2)+" - "+rs.getString(3)+", "+rs.getInt(4));
+		}
+		return resultado;
+	}
+	
+	public void InserirResponsavel(Responsavel resp) throws Exception{	
 		String query = "insert into responsavel (idResponsaveis, nome, cpf, idade, dataNasc, propriedade)";
 		query+= "values (?,?,?,?,?,?);";
 		
-		try {
-			this.getConnection(user, password, porta);
-			PreparedStatement stmt = con.prepareStatement(query);
-			//Preenchendo os valores de ? do Statement
-			stmt.setInt(1, 0);
-			stmt.setString(2, resp.getNome());
-			stmt.setString(3, resp.getDataNasc());
-			stmt.setInt(4, resp.getIdade());
-			stmt.setString(5,resp.getDataNasc());
-			stmt.setInt(6, resp.getPropriedade());
-			stmt.executeUpdate();
-			stmt.close();
-			con.close();
-			return true;
-		}
-		catch(Exception e) {	
-			return false;
-		}
+		this.getConnection(user, password, porta);
+		PreparedStatement stmt = con.prepareStatement(query);
+		//Preenchendo os valores de ? do Statement
+		stmt.setInt(1, 0);
+		stmt.setString(2, resp.getNome());
+		stmt.setString(3, resp.getCpf());
+		stmt.setInt(4, resp.getIdade());
+		stmt.setString(5,resp.getDataNasc());
+		stmt.setInt(6, resp.getPropriedade());
+		stmt.executeUpdate();
+		stmt.close();
+		con.close();
 	}
 	
 	public boolean UpdateResponsavel(Responsavel resp) {

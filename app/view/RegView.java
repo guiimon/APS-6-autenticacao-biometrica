@@ -7,7 +7,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import app.model.RegiaoDAO;
+import app.control.RegiaoDAO;
 
 import javax.swing.JButton;
 import java.awt.Font;

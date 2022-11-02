@@ -18,9 +18,11 @@ public class Responsavel {
 		setPropriedade(propriedade);
 	}
 	
-	public Responsavel(String nome, String cpf, int propriedade) {
+	public Responsavel(String nome, String cpf,int idade, String dataNasc, int propriedade) {
 		setNome(nome);
 		setCpf(cpf);
+		setIdade(idade);
+		setDataNasc(dataNasc);
 		setPropriedade(propriedade);
 	}
 	

@@ -40,7 +40,9 @@ public class Login extends JFrame {
 	private PropView TelaPropView = new PropView();
 	private RespView TelaRespView = new RespView();
 	private UserView TelaUserView = new UserView();
+	private Logged TelaLogado = new Logged();
 	private JPanel MainPanel;
+	
 	
 	//Menu superior
 	private JMenuBar menuBar;
@@ -71,6 +73,7 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 750, 500);
 		
@@ -226,6 +229,7 @@ public class Login extends JFrame {
 		MainPanel.add(TelaPropView, "TelaPropView");
 		MainPanel.add(TelaRespView, "TelaRespView");
 		MainPanel.add(TelaUserView, "TelaUserView");
+		MainPanel.add(TelaLogado, "TelaLogado");
 		
 	}
 	
@@ -244,7 +248,8 @@ public class Login extends JFrame {
 			menuBar.setVisible(true);
 			UserLevel("Ministro do Meio Ambiente");
 			cl = (CardLayout) MainPanel.getLayout();
-			cl.show(MainPanel, "TelaRegAdd");
+			TelaLogado.setTexto("Teste","Usuario de Teste");
+			cl.show(MainPanel, "TelaLogado");
 		}else if(txtLogin.getText().equals("")) {
 			JOptionPane.showMessageDialog(this, "O Login não pode ser vazio.");
 		}
@@ -255,6 +260,7 @@ public class Login extends JFrame {
 	
 	private void menuRegAddActionPerformed() {
 		cl = (CardLayout) MainPanel.getLayout();
+		TelaRegAdd.start();
 		cl.show(MainPanel, "TelaRegAdd");
 	}
 	
@@ -266,6 +272,7 @@ public class Login extends JFrame {
 	
 	private void menuPropAddActionPerformed() {
 		cl = (CardLayout) MainPanel.getLayout();
+		TelaPropAdd.start();
 		cl.show(MainPanel, "TelaPropAdd");
 	}
 	
@@ -277,6 +284,7 @@ public class Login extends JFrame {
 	
 	private void menuRespAddActionPerformed() {
 		cl = (CardLayout) MainPanel.getLayout();
+		TelaRespAdd.start();
 		cl.show(MainPanel, "TelaRespAdd");
 	}
 	
@@ -288,6 +296,7 @@ public class Login extends JFrame {
 	
 	private void menuUserAddActionPerformed() {
 		cl = (CardLayout) MainPanel.getLayout();
+		TelaUserAdd.start();
 		cl.show(MainPanel, "TelaUserAdd");
 	}
 	
@@ -306,7 +315,7 @@ public class Login extends JFrame {
 	
 	private void UserLevel(String cargo) {
 		switch(cargo) {
-		case "Fiscal do Ibama":
+		case "Funcionário":
 			mnRegioes.setEnabled(true);
 			break;
 		case "Diretor de Divisão":
@@ -325,5 +334,9 @@ public class Login extends JFrame {
 			mnResponsaveis.setEnabled(false);
 			mnUsuarios.setEnabled(false);
 		}	
+	}
+	
+	public CardLayout getCardLayout(){
+		return cl;
 	}
 }
