@@ -1,6 +1,5 @@
 package app.view;
 
-import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -13,8 +12,14 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import app.control.UsuarioDAO;
+import app.model.Usuario;
 
-public class UserView extends JPanel {
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
+public class UserView extends PainelBase {
 	UsuarioDAO dao = new UsuarioDAO();
 	
 	private JTable dataTable;
@@ -23,6 +28,12 @@ public class UserView extends JPanel {
 	 * Create the panel.
 	 */
 	public UserView() {
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				carrega();
+			}
+		});
 		setLayout(null);
 		
 		JLabel lblVisualizaoDeUsurios = new JLabel("Visualização de Usuários");
@@ -56,11 +67,21 @@ public class UserView extends JPanel {
 		scrollPane.setViewportView(dataTable);
 		
 		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnVoltarActionPerformed();
+			}
+		});
 		btnVoltar.setFont(new Font("Calibri", Font.PLAIN, 20));
 		btnVoltar.setBounds(169, 404, 100, 33);
 		add(btnVoltar);
 		
 		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnEditarActionPerformed();
+			}
+		});
 		btnEditar.setFont(new Font("Calibri", Font.PLAIN, 20));
 		btnEditar.setBounds(460, 404, 100, 33);
 		add(btnEditar);
@@ -79,4 +100,38 @@ public class UserView extends JPanel {
 		}
 	}
 	
+	private Usuario passarDados() {
+		Usuario resultado = new Usuario();
+		int linha = dataTable.getSelectedRow();
+		for(int i = 0; i<4; i++) {
+			switch(i) {
+			case 0:
+				resultado.setId(Integer.parseInt(dataTable.getModel().getValueAt(linha, i).toString()));
+				break;
+			case 1:
+				resultado.setLogin(dataTable.getModel().getValueAt(linha, i).toString());
+				break;
+			case 2:
+				resultado.setNome(dataTable.getModel().getValueAt(linha, i).toString());
+				break;
+			case 3:
+				resultado.setCargo(dataTable.getModel().getValueAt(linha, i).toString());
+				break;
+			}
+		}
+		return resultado;
+	}
+	
+	private void btnVoltarActionPerformed(){
+		cl.show(MainPanel, "TelaLogado");
+	}
+	
+	private void btnEditarActionPerformed() {
+		if(!dataTable.getSelectionModel().isSelectionEmpty()) {
+			setUsuario(passarDados());
+			cl.show(MainPanel, "TelaUserEdit");
+		}else {
+			JOptionPane.showMessageDialog(this, "Selecione algum elemento da lista.");
+		}
+	}
 }

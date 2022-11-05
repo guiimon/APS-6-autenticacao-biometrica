@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
+import app.model.Propriedade;
 import app.view.PropView;
 
 public class PropriedadeDAO extends DBConnect{
@@ -49,7 +50,7 @@ public class PropriedadeDAO extends DBConnect{
 	}
 	
 	public boolean UpdatePropriedade(Propriedade pro) {
-		String query = "update propriedade set cep = ?, estado = ?, num = ?, regiao = ?";
+		String query = "update propriedade set cep = ?, estado = ?, num = ?, regiao = ? ";
 		query+= "where idpropriedades = ?";
 		try {
 			this.getConnection(user, password, porta);

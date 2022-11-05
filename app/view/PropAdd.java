@@ -1,8 +1,6 @@
 package app.view;
 
-import javax.swing.JPanel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -18,11 +16,11 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.SpinnerNumberModel;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 import java.awt.event.ActionEvent;
 
-public class PropAdd extends JPanel {
+public class PropAdd extends PainelBase {
 	private PropriedadeDAO dao = new PropriedadeDAO();
-	
 	private JComboBox<String> cbxRegiao;
 	private JSpinner spnNumero;
 	private JTextField txtCep;
@@ -33,6 +31,7 @@ public class PropAdd extends JPanel {
 	 */
 	public PropAdd() {
 		setLayout(null);
+
 		
 		JLabel lblTitulo = new JLabel("Registro de Propriedades");
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -84,6 +83,11 @@ public class PropAdd extends JPanel {
 		add(cbxRegiao);
 		
 		JButton btnVoltar = 	new JButton("Voltar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnVoltarActionPerformed();
+			}
+		});
 		btnVoltar.setFont(new Font("Calibri", Font.PLAIN, 20));
 		btnVoltar.setBounds(169, 404, 100, 33);
 		add(btnVoltar);
@@ -97,6 +101,7 @@ public class PropAdd extends JPanel {
 		btnRegistro.setFont(new Font("Calibri", Font.PLAIN, 20));
 		btnRegistro.setBounds(460, 404, 110, 33);
 		add(btnRegistro);
+	
 
 	}
 	
@@ -113,6 +118,10 @@ public class PropAdd extends JPanel {
 		}catch(Exception e) {
 			JOptionPane.showMessageDialog(this, "Não foi possivel efetuar conexão ao banco de dados\nVerifique sua conexão.");
 		}
+	}
+	
+	private void btnVoltarActionPerformed(){
+		cl.show(MainPanel, "TelaLogado");
 	}
 	
 	private void btnRegistroActionPerformed() {

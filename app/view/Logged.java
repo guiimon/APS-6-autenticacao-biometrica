@@ -23,13 +23,13 @@ public class Logged extends JPanel {
 		
 		lblFuncao = new JLabel("");
 		lblFuncao.setFont(new Font("Calibri", Font.PLAIN, 14));
-		lblFuncao.setBounds(552, 47, 154, 18);
+		lblFuncao.setBounds(476, 47, 230, 18);
 		add(lblFuncao);
 		
 		JLabel lblDescricao = new JLabel("Utilize o menu superior para navegar entre as telas do programa.");
 		lblDescricao.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDescricao.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblDescricao.setBounds(107, 427, 536, 18);
+		lblDescricao.setBounds(107, 380, 536, 18);
 		add(lblDescricao);
 		
 

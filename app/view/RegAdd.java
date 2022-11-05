@@ -1,14 +1,8 @@
 package app.view;
 
-import javax.swing.JPanel;
 
-import java.awt.CardLayout;
-import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -20,7 +14,7 @@ import app.model.Regiao;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class RegAdd extends JPanel {
+public class RegAdd extends PainelBase {
 	//
 	private RegiaoDAO dao = new RegiaoDAO();
 	
@@ -102,7 +96,7 @@ public class RegAdd extends JPanel {
 	}
 	
 	private void btnVoltarActionPerformed() {
-		
+		cl.show(MainPanel, "TelaLogado");
 	}
 	
 	private void btnRegistroActionPerformed(){

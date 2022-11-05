@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
+import app.model.Responsavel;
 import app.view.RespView;
 
 public class ResponsavelDAO extends DBConnect{
@@ -43,7 +44,7 @@ public class ResponsavelDAO extends DBConnect{
 	}
 	
 	public boolean UpdateResponsavel(Responsavel resp) {
-		String query = "update responsavel set nome = ?, cpf = ?, idade = ?, dataNasc = ?, propriedade = ?";
+		String query = "update responsavel set nome = ?, cpf = ?, idade = ?, dataNasc = ?, propriedade = ? ";
 		query+= "where idResponsaveis = ?";
 		try {
 			this.getConnection(user, password, porta);

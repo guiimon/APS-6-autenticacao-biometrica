@@ -1,13 +1,13 @@
 package app.model;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class Usuario {
 	//Parametros
 	private int id;
 	private String login;
 	private String biometria;
-	private FileInputStream input;
+	private InputStream input;
 	private String nome;
 	private String cargo;
 	
@@ -24,21 +24,14 @@ public class Usuario {
 	}
 	
 	
-	public Usuario(int id,String login,String biometria, String nome, String cargo) {
+	public Usuario(int id,String login, InputStream imgCadastro, String nome, String cargo) {
 		setId(id);
 		setLogin(login);
-		setBiometria(biometria);
+		setInput(imgCadastro);
 		setNome(nome);
 		setCargo(cargo);
 	}
 	
-	public Usuario(int id, String login,FileInputStream biometria, String nome, String cargo) {
-		setId(id);
-		setLogin(login);
-		setInput(biometria);
-		setNome(nome);
-		setCargo(cargo);
-	}
 	
 	//Getters e Setters
 	public int getId() {
@@ -55,10 +48,10 @@ public class Usuario {
 	}
 	
 	
-	public FileInputStream getInput() {
+	public InputStream getInput() {
 		return input;
 	}
-	public void setInput(FileInputStream biometria) {
+	public void setInput(InputStream biometria) {
 		this.input = biometria;
 	}
 	

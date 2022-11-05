@@ -27,7 +27,7 @@ public class UsuarioDAO extends DBConnect{
 	}
 	
 	public boolean UpdateUsuarioBiometria(Usuario usr) {
-		String query = "update usuario set login = ?, biometria = ?, nome = ?, cargo = ?";
+		String query = "update usuario set login = ?, biometria = ?, nome = ?, cargo = ? ";
 		query+= "where iduser = ?";
 		try {
 			this.getConnection(user, password, porta);
@@ -49,7 +49,7 @@ public class UsuarioDAO extends DBConnect{
 	}
 	
 	public boolean UpdateUsuario(Usuario usr) {
-		String query = "update usuario set login = ?, nome = ?, cargo = ?";
+		String query = "update usuario set login = ?, nome = ?, cargo = ? ";
 		query+= "where iduser = ?";
 		try {
 			this.getConnection(user, password, porta);
@@ -76,7 +76,7 @@ public class UsuarioDAO extends DBConnect{
 		PreparedStatement stmt = con.prepareStatement(query);
 		ResultSet rs = stmt.executeQuery();
 		while(rs.next()) {
-			resultado.add(new Usuario(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)));
+			resultado.add(new Usuario(rs.getInt(1),rs.getString(2),rs.getString(4),rs.getString(5)));
 		}
 		return resultado;
 	}
@@ -96,21 +96,33 @@ public class UsuarioDAO extends DBConnect{
 		janela.getTable().setModel(modelo);
 	}
 	
-	public boolean checaUsuario(String usuario) {
-		String query = "select * from usuario where usuario = ?;";
+	
+	public Usuario RetornaUsuario(String usuario) {
+		String query = "select * from usuario where login = ?"; //não especifica qual valor será adicionado
+		Usuario userDB = null;
 		try {
 			this.getConnection(user, password, porta);
 			PreparedStatement stmt = con.prepareStatement(query);
+			stmt.setString(1, usuario); //após passar para o PreparedStatement seta o valor no campo ?
 			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) {
-				return true;
-			}else {
-				return false;
+			while (rs.next()) {
+				userDB = new Usuario();
+				userDB.setNome(rs.getString("nome"));
+				userDB.setNome(rs.getString("login"));
+				userDB.setCargo(rs.getString("cargo"));
+				userDB.setInput(rs.getBinaryStream("biometria"));
 			}
-		}catch(Exception e) {
-			return false;
+			stmt.close();
+			con.close();
+			return userDB;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return userDB;
 		}
+
+
 	}
+	
 	
 	
 }

@@ -37,6 +37,7 @@ public class DBConnect {
 	public boolean PesquisarUsuario(String login){
 		String query = "select * from usuario where login = ?";
 		try {
+			this.getConnection(user, password, porta);
 			PreparedStatement stmt = con.prepareStatement(query);
 			stmt.setString(1, login);
 			ResultSet rs = stmt.executeQuery();

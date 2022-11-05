@@ -1,6 +1,5 @@
 package app.view;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import java.awt.Color;
 import javax.swing.ScrollPaneConstants;
@@ -8,6 +7,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import app.control.RegiaoDAO;
+import app.model.Regiao;
 
 import javax.swing.JButton;
 import java.awt.Font;
@@ -16,8 +16,12 @@ import java.io.IOException;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
-public class RegView extends JPanel {
+public class RegView extends PainelBase {
 	//
 	RegiaoDAO dao = new RegiaoDAO();
 	
@@ -28,6 +32,12 @@ public class RegView extends JPanel {
 	 * Create the panel.
 	 */
 	public RegView() {
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				carrega();
+			}
+		});
 		
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(null);
@@ -66,11 +76,21 @@ public class RegView extends JPanel {
 		scrollPane.setViewportView(dataTable);
 		
 		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnVoltarActionPerformed();
+			}
+		});
 		btnVoltar.setFont(new Font("Calibri", Font.PLAIN, 20));
 		btnVoltar.setBounds(169, 404, 100, 33);
 		add(btnVoltar);
 		
 		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnEditarActionPerformed();
+			}
+		});
 		btnEditar.setFont(new Font("Calibri", Font.PLAIN, 20));
 		btnEditar.setBounds(460, 404, 100, 33);
 		add(btnEditar);
@@ -97,6 +117,41 @@ public class RegView extends JPanel {
 		}catch(Exception e){
 			JOptionPane.showMessageDialog(this, e);
 		}
+	}
+	
+	private Regiao passarDados() {
+		Regiao resultado = new Regiao();
+		int linha = dataTable.getSelectedRow();
+		for(int i = 0; i<5; i++) {
+			switch(i) {
+			case 0:
+				resultado.setId(Integer.parseInt(dataTable.getModel().getValueAt(linha, i).toString()));
+				break;
+			case 1:
+				resultado.setIdentificacao(dataTable.getModel().getValueAt(linha, i).toString());
+				break;
+			case 2:
+				resultado.setImpacto(dataTable.getModel().getValueAt(linha, i).toString());
+				break;
+			case 3:
+				resultado.setOcorrencias(Integer.parseInt(dataTable.getModel().getValueAt(linha, i).toString().toString()));
+				break;
+			}
+		}
+		return resultado;
+	}
+	
+	private void btnEditarActionPerformed() {
+		if(!dataTable.getSelectionModel().isSelectionEmpty()) {
+			setRegiao(passarDados());
+			cl.show(MainPanel, "TelaRegEdit");
+		}else {
+			JOptionPane.showMessageDialog(this, "Selecione algum elemento da lista.");
+		}	
+	}
+	
+	private void btnVoltarActionPerformed(){
+		cl.show(MainPanel, "TelaLogado");
 	}
 	
 }

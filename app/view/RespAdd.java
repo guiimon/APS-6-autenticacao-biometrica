@@ -6,8 +6,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -17,7 +15,7 @@ import app.model.Responsavel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class RespAdd extends JPanel {
+public class RespAdd extends PainelBase {
 	private ResponsavelDAO dao = new ResponsavelDAO();
 	
 	private JTextField txtNome;
@@ -73,6 +71,11 @@ public class RespAdd extends JPanel {
 		add(txtCPF);
 		
 		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnVoltarActionPerformed();
+			}
+		});
 		btnVoltar.setFont(new Font("Calibri", Font.PLAIN, 20));
 		btnVoltar.setBounds(169, 404, 100, 33);
 		add(btnVoltar);
@@ -106,6 +109,7 @@ public class RespAdd extends JPanel {
 		txtNascimento.setColumns(10);
 		txtNascimento.setBounds(280, 272, 180, 19);
 		add(txtNascimento);
+		
 	}
 	
 	public void start() {
@@ -140,5 +144,9 @@ public class RespAdd extends JPanel {
 		}else {
 			JOptionPane.showMessageDialog(this, "Selecione uma propriedade.");
 		}
+	}
+	
+	private void btnVoltarActionPerformed(){
+		cl.show(MainPanel, "TelaLogado");
 	}
 }

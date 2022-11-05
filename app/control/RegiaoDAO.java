@@ -34,7 +34,7 @@ public class RegiaoDAO extends DBConnect{
 	}
 	
 	public boolean UpdateRegiao(Regiao reg) {
-		String query = "update regiao set identificacao = ?, impacto = ?, ocorrencias = ?";
+		String query = "update regiao set identificacao = ?, impacto = ?, ocorrencias = ? ";
 		query+= "where idRegioes = ?";
 		try {
 			this.getConnection(user, password, porta);

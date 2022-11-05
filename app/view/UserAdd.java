@@ -2,23 +2,21 @@ package app.view;
 
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import app.control.UsuarioDAO;
+import app.model.Usuario;
 
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
@@ -26,7 +24,7 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class UserAdd extends JPanel {
+public class UserAdd extends PainelBase {
 	JFileChooser janelaArquivo = new JFileChooser();
 	private UsuarioDAO dao = new UsuarioDAO();
 	private JTextField txtLogin;
@@ -34,11 +32,12 @@ public class UserAdd extends JPanel {
 	private JTextField txtBiometria;
 	private JComboBox<String> cbxCargo;
 	private JLabel lblImagem;
+	private File imgCadastro;
 	/**
 	 * Create the panel.
 	 */
 	public UserAdd() {
-		FileFilter filter = new FileNameExtensionFilter("Imagens", new String[] {"jpg","jpeg","png"});
+		FileFilter filter = new FileNameExtensionFilter("Imagens", new String[] {"jpg","jpeg","png","tif"});
 		janelaArquivo.addChoosableFileFilter(filter);
 		janelaArquivo.setFileFilter(filter);
 		
@@ -62,7 +61,7 @@ public class UserAdd extends JPanel {
 		lblNome.setBounds(172, 192, 72, 23);
 		add(lblNome);
 		
-		JLabel lblBiometria = new JLabel("Biometria");
+		JLabel lblBiometria = new JLabel("Biometria:");
 		lblBiometria.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblBiometria.setFont(new Font("Calibri", Font.PLAIN, 18));
 		lblBiometria.setBounds(89, 232, 155, 23);
@@ -71,7 +70,7 @@ public class UserAdd extends JPanel {
 		JLabel lblCargo = new JLabel("Cargo:");
 		lblCargo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblCargo.setFont(new Font("Calibri", Font.PLAIN, 18));
-		lblCargo.setBounds(113, 310, 131, 23);
+		lblCargo.setBounds(113, 302, 131, 23);
 		add(lblCargo);
 		
 		txtLogin = new JTextField();
@@ -81,10 +80,15 @@ public class UserAdd extends JPanel {
 		
 		txtNome = new JTextField();
 		txtNome.setColumns(10);
-		txtNome.setBounds(280, 193, 230, 19);
+		txtNome.setBounds(280, 192, 230, 19);
 		add(txtNome);
 		
 		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnVoltarActionPerformed();
+			}
+		});
 		btnVoltar.setFont(new Font("Calibri", Font.PLAIN, 20));
 		btnVoltar.setBounds(169, 404, 100, 33);
 		add(btnVoltar);
@@ -101,7 +105,7 @@ public class UserAdd extends JPanel {
 		
 		txtBiometria = new JTextField();
 		txtBiometria.setEditable(false);
-		txtBiometria.setBounds(280, 233, 230, 19);
+		txtBiometria.setBounds(280, 232, 230, 19);
 		add(txtBiometria);
 		txtBiometria.setColumns(10);
 		
@@ -117,7 +121,7 @@ public class UserAdd extends JPanel {
 		
 		cbxCargo = new JComboBox<String>();
 		cbxCargo.setModel(new DefaultComboBoxModel<String>(new String[] {"Escolha a Função", "1 - Funcionário", "2 - Diretor de Divisão", "3 - Ministro do Meio Ambiente"}));
-		cbxCargo.setBounds(280, 310, 230, 21);
+		cbxCargo.setBounds(280, 302, 230, 21);
 		add(cbxCargo);
 		
 		lblImagem = new JLabel("NO IMAGE");
@@ -134,12 +138,13 @@ public class UserAdd extends JPanel {
 	
 	private void btnRegistroActionPerformed() {
 		if(verificador()) {
-			if(dao.checaUsuario(txtLogin.getText())) {
+			if(dao.PesquisarUsuario(txtLogin.getText())) {
 				JOptionPane.showMessageDialog(this, "Usuário já existe no banco de dados, tente outro nome.");
 			}else {
 				try {
-					FileInputStream stream = new FileInputStream(txtBiometria.getText());
-					dao.InserirUser(txtLogin.getText(), txtNome.getText(), stream, retornaCargo(cbxCargo.getSelectedIndex()));
+					FileInputStream fis = new FileInputStream(imgCadastro);
+
+					dao.InserirUsuario(new Usuario(0, txtLogin.getText(), fis, txtNome.getText(), retornaCargo(cbxCargo.getSelectedIndex()) ));
 					JOptionPane.showMessageDialog(this, "Usuário criado com sucesso!!!");
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(this, e);
@@ -152,17 +157,19 @@ public class UserAdd extends JPanel {
 	}
 	
 	private void btnArquivoActionPerformed() {
-		janelaArquivo.showOpenDialog(this);
-		txtBiometria.setText(janelaArquivo.getSelectedFile().getAbsolutePath());
-		try {
-			Image imagem = ImageIO.read(janelaArquivo.getSelectedFile());
-			imagem = imagem.getScaledInstance(lblImagem.getWidth(), lblImagem.getHeight(), Image.SCALE_SMOOTH);
-			lblImagem.setIcon(new ImageIcon(imagem));
-		} catch (IOException e) {
-			e.printStackTrace();
+		int opt = janelaArquivo.showOpenDialog(this);
+		if(opt == JFileChooser.APPROVE_OPTION) {
+			txtBiometria.setText(janelaArquivo.getSelectedFile().getAbsolutePath());
+			File imagem = janelaArquivo.getSelectedFile();
+			ImageIcon icon = new ImageIcon(new ImageIcon(imagem.getAbsolutePath()).getImage().getScaledInstance(lblImagem.getWidth(), lblImagem.getHeight(), Image.SCALE_SMOOTH));
+			lblImagem.setIcon(icon);
+			imgCadastro = imagem;
 		}
 	}
 	
+	private void btnVoltarActionPerformed(){
+		cl.show(MainPanel, "TelaLogado");
+	}
 	
 	private String retornaCargo(int index) {
 		String resultado;
@@ -198,4 +205,6 @@ public class UserAdd extends JPanel {
 		lblImagem.setIcon(null);
 		cbxCargo.setSelectedIndex(0);
 	}
+	
+	
 }
