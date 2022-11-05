@@ -129,7 +129,8 @@ public class PropAdd extends PainelBase {
 			if(!txtCep.getText().equals("")&!txtEstado.getText().equals("")&!spnNumero.getValue().equals(0))
 			try {
 				dao.InserirPropriedade(new Propriedade(txtCep.getText(), txtEstado.getText(), (Integer)spnNumero.getValue(), cbxRegiao.getSelectedIndex()));
-				JOptionPane.showMessageDialog(this, "Propriedade Registrada com êxito.");
+				JOptionPane.showMessageDialog(this, "Propriedade registrada com êxito.");
+				start();
 			}catch(Exception e) {
 				JOptionPane.showMessageDialog(this, "Preencha todos os valores.");
 			}

@@ -145,7 +145,8 @@ public class UserAdd extends PainelBase {
 					FileInputStream fis = new FileInputStream(imgCadastro);
 
 					dao.InserirUsuario(new Usuario(0, txtLogin.getText(), fis, txtNome.getText(), retornaCargo(cbxCargo.getSelectedIndex()) ));
-					JOptionPane.showMessageDialog(this, "Usuário criado com sucesso!!!");
+					JOptionPane.showMessageDialog(this, "Usuário registrado com sucesso!!!");
+					start();
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(this, e);
 				}

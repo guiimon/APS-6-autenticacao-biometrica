@@ -108,7 +108,7 @@ public class UsuarioDAO extends DBConnect{
 			while (rs.next()) {
 				userDB = new Usuario();
 				userDB.setNome(rs.getString("nome"));
-				userDB.setNome(rs.getString("login"));
+				userDB.setLogin(rs.getString("login"));
 				userDB.setCargo(rs.getString("cargo"));
 				userDB.setInput(rs.getBinaryStream("biometria"));
 			}

@@ -18,7 +18,7 @@ public class Logged extends JPanel {
 		
 		lblBemvindo = new JLabel("Bem vindo, ");
 		lblBemvindo.setFont(new Font("Calibri", Font.PLAIN, 14));
-		lblBemvindo.setBounds(64, 46, 154, 18);
+		lblBemvindo.setBounds(64, 46, 402, 18);
 		add(lblBemvindo);
 		
 		lblFuncao = new JLabel("");

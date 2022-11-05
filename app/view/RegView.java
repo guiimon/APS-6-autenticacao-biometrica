@@ -39,7 +39,6 @@ public class RegView extends PainelBase {
 			}
 		});
 		
-		setBackground(Color.LIGHT_GRAY);
 		setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();

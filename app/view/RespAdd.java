@@ -133,7 +133,8 @@ public class RespAdd extends PainelBase {
 			if(!txtNome.getText().equals("")&!txtCPF.getText().equals("")&!txtNascimento.getText().equals("")) {
 				try {
 					dao.InserirResponsavel(new Responsavel(txtNome.getText(), txtCPF.getText(), Integer.parseInt(txtIdade.getText()), txtNascimento.getText(), cbxPropriedade.getSelectedIndex()));
-					JOptionPane.showMessageDialog(this, "Responsável cadastrado com êxito.");
+					JOptionPane.showMessageDialog(this, "Responsável registrado com êxito.");
+					start();
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(this, e);
 					

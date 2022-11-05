@@ -103,7 +103,8 @@ public class RegAdd extends PainelBase {
 		if(!txtIdentificacao.getText().equals("") & !txtImpacto.getText().equals("") & !txtQuantidade.getText().equals("")) {
 			try{
 				dao.InserirRegiao(new Regiao(txtIdentificacao.getText(),txtImpacto.getText(),Integer.parseInt(txtQuantidade.getText())));
-				JOptionPane.showMessageDialog(this, "Região adicionada com êxito.");
+				JOptionPane.showMessageDialog(this, "Região registrada com êxito.");
+				start();
 			}catch(Exception e){
 				JOptionPane.showMessageDialog(this, "Coloque um valor numérico na quantidade.");
 			}
